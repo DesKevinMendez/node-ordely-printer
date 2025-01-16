@@ -1,6 +1,6 @@
-import { COMMANDS } from './commands.js'
-import { textToBuffer, formatAmount } from './utils.js'
-import { findPrinter, print } from './printers.js'
+import { COMMANDS } from '../utils/commands.js'
+import { textToBuffer, formatAmount } from '../utils/index.js'
+import { findPrinter, print } from '../printers/index.js'
 
 export async function printReceipt(data) {
   try {

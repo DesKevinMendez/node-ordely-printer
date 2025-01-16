@@ -1,4 +1,4 @@
-import { OrderlyPrinter } from './src/OrderlyPrinter.js'
+import { OrderlyPrinter } from './src/printers/OrderlyPrinter.js'
 
 const orderData = {
   "id": "9dfa9fde-9b67-4742-952f-3fbe7b59eac6",
@@ -79,7 +79,7 @@ async function main() {
     // List available printers
     const printers = printer.getPrinters()
     console.log('Available printers:', printers)
-
+    
     // Print test page
     await printer.printTest()
 
