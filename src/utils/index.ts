@@ -9,5 +9,5 @@ export function centerText(text: string, width = 32) {
 }
 
 export function formatAmount(amount: number) {
-  return amount.toFixed(2)
+  return (amount / 100).toFixed(2)
 } 
