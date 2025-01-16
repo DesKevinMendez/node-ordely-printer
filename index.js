@@ -1,4 +1,4 @@
-import { printReceipt } from './src/receipt.js'
+import { OrderlyPrinter } from './src/OrderlyPrinter.js'
 
 const orderData = {
   "id": "9dfa9fde-9b67-4742-952f-3fbe7b59eac6",
@@ -73,26 +73,37 @@ const orderData = {
 
 async function main() {
   try {
-    await printReceipt({
-      businessName: 'CAFÉ & POSTRES',
-      legalName: 'CAFÉ & POSTRES, S.A. DE C.V.',
-      address: 'CALLE PRINCIPAL #123',
-      location: 'LOCAL 1, ZONA ROSA',
-      city: 'SAN SALVADOR',
-      cashier: `${orderData.user.first_name} ${orderData.user.last_name}`,
-      ticket: orderData.order.toString(),
-      table: orderData.table?.name,
-      items: orderData.meta.map(item => ({
-        qty: item.quantity,
-        name: item.name,
-        price: item.price / 100
-      })),
-      subtotal: orderData.subtotal / 100,
-      tip: orderData.tip / 100,
-      total: orderData.total / 100,
-      orderTime: new Date(orderData.created_at).toLocaleString(),
-      orderId: orderData.id
-    })
+    // Create printer instance
+    const printer = new OrderlyPrinter()
+    
+    // List available printers
+    const printers = printer.getPrinters()
+    console.log('Available printers:', printers)
+
+    // Print test page
+    await printer.printTest()
+
+    // Print receipt
+    // await printer.print({
+    //   businessName: 'CAFÉ & POSTRES',
+    //   legalName: 'CAFÉ & POSTRES, S.A. DE C.V.',
+    //   address: 'CALLE PRINCIPAL #123',
+    //   location: 'LOCAL 1, ZONA ROSA',
+    //   city: 'SAN SALVADOR',
+    //   cashier: `${orderData.user.first_name} ${orderData.user.last_name}`,
+    //   ticket: orderData.order.toString(),
+    //   table: orderData.table?.name,
+    //   items: orderData.meta.map(item => ({
+    //     qty: item.quantity,
+    //     name: item.name,
+    //     price: item.price / 100
+    //   })),
+    //   subtotal: orderData.subtotal / 100,
+    //   tip: orderData.tip / 100,
+    //   total: orderData.total / 100,
+    //   orderTime: new Date(orderData.created_at).toLocaleString(),
+    //   orderId: orderData.id
+    // })
   } catch (error) {
     console.error('Error in main:', error)
   }
