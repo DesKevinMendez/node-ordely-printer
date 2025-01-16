@@ -11,7 +11,7 @@ async function main() {
     console.log('Available printers:', printers)
     
     // Print test page
-    // await printer.printTest()
+    await printer.printTest()
   } catch (error) {
     console.error('Error in main:', error)
   }
