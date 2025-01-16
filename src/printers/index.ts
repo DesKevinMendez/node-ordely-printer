@@ -25,7 +25,7 @@ export async function findPrinter() {
   }
 }
 
-export async function print(device, data) {
+export async function print(device: usb.Device, data: any) {
   return new Promise((resolve, reject) => {
     try {
       const iface = device.interface(0)
@@ -48,7 +48,7 @@ export async function print(device, data) {
 
       // Send data
       console.log('Sending data...')
-      endpoint.transfer(data, (error) => {
+      endpoint.makeTransfer(data, (error) => {
         try {
           iface.release(() => {
             if (error) {
@@ -56,7 +56,7 @@ export async function print(device, data) {
               reject(error)
             } else {
               console.log('Transfer completed')
-              resolve()
+              resolve(true)
             }
           })
         } catch (e) {

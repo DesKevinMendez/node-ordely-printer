@@ -3,6 +3,8 @@ import { textToBuffer, formatAmount } from '../utils/index.js'
 import usb from 'usb'
 
 export class OrderlyPrinter {
+  device: usb.Device | null = null
+
   constructor() {
     this.device = null
   }
@@ -43,6 +45,12 @@ export class OrderlyPrinter {
       city: 'Test City',
       cashier: 'Kevin Méndez',
       ticket: 'TEST-001',
+      subtotal: 2.50,
+      tip: 0.50,
+      total: 3.00,
+      orderTime: '2024-01-16 12:00:00',
+      orderId: '1234567890',
+      table: '1',
       items: [
         { qty: 1, name: 'Test Item 1', price: 1.00 },
         { qty: 2, name: 'Test Item 2', price: 2.50 }
@@ -52,13 +60,16 @@ export class OrderlyPrinter {
   }
 
   // Print receipt
-  async print(data) {
+  async print(data: any) {
     if (!this.device) {
       this.initialize()
     }
 
     return new Promise((resolve, reject) => {
       try {
+        if (!this.device) {
+          throw new Error('Device not initialized')
+        }
         this.device.open()
         const iface = this.device.interface(0)
         
@@ -76,9 +87,9 @@ export class OrderlyPrinter {
         }
 
         // Calculate totals
-        const subtotal = data.subtotal || data.items.reduce((sum, item) => sum + (item.qty * item.price), 0)
+        const subtotal = data.subtotal;
         const tip = data.tip || 0
-        const total = data.total || subtotal + tip
+        const total = data.total
 
         // Prepare receipt content
         const receipt = Buffer.concat([
@@ -101,7 +112,7 @@ export class OrderlyPrinter {
           data.table ? textToBuffer('MESA: ' + data.table + '\n') : Buffer.from([]),
           textToBuffer('*'.repeat(40) + '\n'),
           textToBuffer('CANT  PRODUCTO          P.UNIT    TOTAL\n'),
-          ...data.items.map(item => 
+          ...data.items.map((item: any) => 
             textToBuffer(
               `${item.qty.toString().padEnd(4)} ${
                 item.name.padEnd(16)} ${
@@ -123,24 +134,29 @@ export class OrderlyPrinter {
         ])
 
         // Send data
-        console.log('Sending data...')
-        endpoint.transfer(receipt, (error) => {
-          try {
-            iface.release(() => {
-              this.device.close()
-              if (error) {
-                console.error('Transfer error:', error)
-                reject(error)
-              } else {
-                console.log('Transfer completed')
-                resolve()
-              }
-            })
-          } catch (e) {
-            console.error('Error releasing interface:', e)
-            reject(e)
-          }
-        })
+        console.log('Sending data...');
+        
+        if (endpoint instanceof usb.OutEndpoint) {
+          endpoint.transfer(receipt, (error: any) => {
+            try {
+              iface.release(() => {
+                if (this.device) {
+                  this.device.close()
+                }
+                if (error) {
+                  console.error('Transfer error:', error)
+                  reject(error)
+                } else {
+                  console.log('Transfer completed')
+                  resolve(true)
+                }
+              })
+            } catch (e) {
+              console.error('Error releasing interface:', e)
+              reject(e)
+            }
+          })
+        }
       } catch (error) {
         console.error('Error in print:', error)
         reject(error)
