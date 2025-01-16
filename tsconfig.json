@@ -15,8 +15,9 @@
     "declarationDir": "./dist/@types",
     "outDir": "./dist",
     "rootDir": "./",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*", "index.ts"],

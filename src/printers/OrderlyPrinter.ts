@@ -1,5 +1,5 @@
-import { COMMANDS } from '../utils/commands.js'
-import { textToBuffer, formatAmount } from '../utils/index.js'
+import { COMMANDS } from '@/utils/commands.js'
+import { textToBuffer, formatAmount } from '@/utils/index.js'
 import usb from 'usb'
 
 export class OrderlyPrinter {
