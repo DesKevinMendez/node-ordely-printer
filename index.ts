@@ -74,11 +74,12 @@ const orderData = {
 async function main() {
   try {
     // Create printer instance
+
     const printer = new OrderlyPrinter()
     
     // List available printers
-    const printers = printer.getPrinters()
-    console.log('Available printers:', printers[0])
+    const printers = await printer.getPrinters()
+    console.log('Available printers:', printers)
     
     // Print test page
     // await printer.printTest()
