@@ -7,7 +7,6 @@ export const buildReceipt = (data: PrinterData) => {
   const receipt = Buffer.concat([
     COMMANDS.INIT,
     COMMANDS.CHARSET_PC850,
-    COMMANDS.ALIGN_CENTER,
     COMMANDS.BOLD_ON,
     textToBuffer(data.commerce.name + '\n'),
     COMMANDS.BOLD_OFF,
