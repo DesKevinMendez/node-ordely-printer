@@ -12,7 +12,18 @@ export class OrdelyPrinter {
   // Get list of available printers
   async getPrinters() {
     try {
-      // Solicitar dispositivo USB con los filtros adecuados
+      const devices = await webusb.getDevices();
+
+      if (devices.length > 0) {
+        return devices.map(d => {
+          return {
+            device: d,
+            name: `${d.manufacturerName} ${d.productName}`
+          }
+        })
+      }
+      
+      // get device with filters
       const device = await webusb.requestDevice({
         filters: [{}]
       })
