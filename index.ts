@@ -1,9 +1,9 @@
-import { OrderlyPrinter } from '@/printers/OrdelyPrinter.js'
+import { OrdelyPrinter } from '@/printers/OrdelyPrinter.js'
 
 async function main() {
   try {
     // Create printer instance
-    const printer = new OrderlyPrinter()
+    const printer = new OrdelyPrinter()
     
     // List available printers
     const printers = await printer.getPrinters()
@@ -17,3 +17,5 @@ async function main() {
 }
 
 main()
+
+export { OrdelyPrinter }

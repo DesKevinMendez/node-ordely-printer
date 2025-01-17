@@ -2,7 +2,7 @@ import { buildReceipt } from '@/build/receipt.js'
 import { printExample } from '@/dummy/printExample.js'
 import { webusb } from 'usb'
 
-export class OrderlyPrinter {
+export class OrdelyPrinter {
   device: USBDevice | null = null
 
   constructor() {
