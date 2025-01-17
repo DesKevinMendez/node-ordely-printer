@@ -1,5 +1,5 @@
 {
-  "name": "thermal-printer-test",
+  "name": "node-printer",
   "version": "1.0.0",
   "description": "Thermal printer test script",
   "main": "dist/index.js",
